@@ -1,0 +1,15 @@
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    container_name: ecommerce-app
+    volumes:
+      - ./mysql:/var/lib/mysql
