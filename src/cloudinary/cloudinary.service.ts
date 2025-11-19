@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { v2 as cloudinary, UploadApiOptions, UploadApiResponse } from 'cloudinary';
 import * as streamifier from 'streamifier';
 
@@ -21,5 +21,23 @@ export class CloudinaryService {
       );
       streamifier.createReadStream(file.buffer).pipe(uploadStream)
     })
+  }
+
+  async deleteFile(imageId: string) {
+    try {
+      const result = await this.cloudinaryClient.uploader.destroy(imageId);
+      return result;
+    } catch (error) {
+      console.log('Error deleting image', error);
+      throw new InternalServerErrorException('Cloudinary deletion failed')
+    }
+  }
+
+  private extractPublicId(imageUrl: string): string {
+    const parts = imageUrl.split('/');
+    const fileName = parts.pop();
+    const folder = parts.splice(parts.indexOf('upload') + 1).join('/');
+    const publicId = (folder ? `${folder}/` : '') + fileName?.split('.')[0]
+    return publicId;
   }
 }

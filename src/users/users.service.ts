@@ -24,11 +24,13 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.findUserById(id);
+    const user = await this.userRepository.preload({id, ...updateUserDto})
 
-    const updatedUser = Object.assign(user, updateUserDto);
+    if (!user) {
+      throw new NotFoundException('El usuario no existe');
+    }
 
-    return this.userRepository.save(updatedUser);
+    return this.userRepository.save(user);
   }
 
   async updateWithImage(id: number, updateUserDto: UpdateUserDto, file: Express.Multer.File) {

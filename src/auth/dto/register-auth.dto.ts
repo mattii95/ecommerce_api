@@ -25,8 +25,8 @@ export class RegisterAuthDto {
   @MinLength(6, { message: 'La contraseña debe tener minimo 6 caracteres' })
   password: string;
 
-  @IsArray()
-  @ArrayMinSize(1)
-  @IsString({ each: true })
-  rolesIds: string[]
+  // @IsArray()
+  // @ArrayMinSize(1)
+  // @IsString({ each: true })
+  // rolesIds: string[]
 }

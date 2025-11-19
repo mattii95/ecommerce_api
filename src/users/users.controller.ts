@@ -41,7 +41,7 @@ export class UsersController {
 
   @HasRoles(JwtRol.CLIENT)
   @UseGuards(JwtAuthGuard, JwtRolesGuard)
-  @Post(':id/upload-image')
+  @Patch(':id/upload-image')
   @UseInterceptors(FileInterceptor('file'))
   async updateWithImage(
     @Param('id', ParseIntPipe) id: number,

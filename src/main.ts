@@ -6,7 +6,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('bootstrap');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  }));
   await app.listen(process.env.PORT ?? 3000, process.env.HOST ?? 'localhost');
 
   logger.log(`App running on host: ${process.env.HOST ?? 'localhost'} and port ${process.env.PORT ?? 3000}`);
